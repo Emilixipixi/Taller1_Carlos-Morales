@@ -4,6 +4,7 @@ public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D rb;
     private Animator animator;
+    private PlayerHealt salud; // <-- NUEVO
 
     public float moveSpeed = 5f;
     public float jumpForce = 7f;
@@ -16,6 +17,7 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        salud = GetComponent<PlayerHealt>(); // <-- NUEVO
     }
 
     // Update is called once per frame
@@ -23,18 +25,22 @@ public class PlayerController : MonoBehaviour
     {
         // Movimiento horizontal
         float move = Input.GetAxis("Horizontal");
-        rb.linearVelocity = new Vector2(move * moveSpeed, rb.linearVelocity.y);
+
+        if (!salud.enRechazo) // <-- NUEVO
+        {                     // <-- NUEVO
+            rb.linearVelocity = new Vector2(move * moveSpeed, rb.linearVelocity.y);
+        }                     // <-- NUEVO
 
         // Animación Idle / Run
         float velocidadAnimacion = Mathf.Abs(move);
         animator.SetFloat("Speed", velocidadAnimacion);
 
         // Volteo (flip) según la dirección
-        if (move > 0 && !mirandoDerecha)
+        if (move > 0 && !mirandoDerecha && !salud.enRechazo) // <-- NUEVO (se agregó && !salud.enRechazo)
         {
             Voltear();
         }
-        else if (move < 0 && mirandoDerecha)
+        else if (move < 0 && mirandoDerecha && !salud.enRechazo) // <-- NUEVO (se agregó && !salud.enRechazo)
         {
             Voltear();
         }
