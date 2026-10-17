@@ -51,7 +51,7 @@ public class PlayerHealt : MonoBehaviour
         }
     }
 
-    void RecibirDanio(Transform enemigo)
+    public void RecibirDanio(Transform enemigo)
     {
         if (esInvulnerable || muerto) return;
 
